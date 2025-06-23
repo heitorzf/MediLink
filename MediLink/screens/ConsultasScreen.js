@@ -10,6 +10,12 @@ export default function ConsultasScreen() {
   useEffect(() => {
     const fetchConsultas = async () => {
       try {
+        // Verifica se o usuário está logado
+        if (!auth.currentUser) {
+          setLoading(false);
+          return;
+        }
+
         const q = query(collection(db, "consultas"), where("userId", "==", auth.currentUser.uid));
         const querySnapshot = await getDocs(q);
         
@@ -31,6 +37,7 @@ export default function ConsultasScreen() {
         setConsultas(consultasData);
       } catch (error) {
         console.error("Erro ao buscar consultas:", error);
+        Alert.alert("Erro", "Não foi possível carregar as consultas");
       } finally {
         setLoading(false);
       }
@@ -38,6 +45,17 @@ export default function ConsultasScreen() {
     
     fetchConsultas();
   }, []);
+
+  const cancelarConsulta = async (consultaId) => {
+    try {
+      await deleteDoc(doc(db, "consultas", consultaId));
+      // Remove da lista local
+      setConsultas(consultas.filter(consulta => consulta.id !== consultaId));
+      console.log("Consulta cancelada com sucesso!");
+    } catch (error) {
+      console.error("Erro ao cancelar:", error);
+    }
+  };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -154,6 +172,13 @@ export default function ConsultasScreen() {
                       <Text style={styles.historicoText}>{item.historicoMedico}</Text>
                     </View>
                   )}
+
+                  <TouchableOpacity 
+                    style={styles.cancelButton}
+                    onPress={() => cancelarConsulta(item.id)}
+                  >
+                    <Text style={styles.cancelButtonText}>Cancelar</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             );
