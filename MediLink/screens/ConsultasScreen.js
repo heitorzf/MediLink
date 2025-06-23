@@ -41,10 +41,12 @@ export default function ConsultasScreen() {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('pt-BR', {
+    return date.toLocaleString('pt-BR', {
       day: '2-digit',
       month: '2-digit',
-      year: 'numeric'
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
     });
   };
 
@@ -56,7 +58,9 @@ export default function ConsultasScreen() {
     return {
       day: date.getDate(),
       month: months[date.getMonth()],
-      weekDay: days[date.getDay()]
+      weekDay: days[date.getDay()],
+      hour: date.getHours().toString().padStart(2, '0'),
+      minute: date.getMinutes().toString().padStart(2, '0'),
     };
   };
 
@@ -126,6 +130,7 @@ export default function ConsultasScreen() {
                     <Text style={styles.dateDay}>{dateInfo.day}</Text>
                     <Text style={styles.dateMonth}>{dateInfo.month}</Text>
                     <Text style={styles.dateWeekDay}>{dateInfo.weekDay}</Text>
+                    <Text style={styles.dateHour}>{dateInfo.hour}:{dateInfo.minute}</Text>
                   </View>
                   
                   <View style={styles.consultaInfo}>
@@ -265,6 +270,12 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: '#95A5A6',
     marginTop: 2,
+  },
+  dateHour: {
+    fontSize: 14,
+    color: '#4A90E2',
+    fontWeight: 'bold',
+    marginTop: 4,
   },
   consultaInfo: {
     flex: 1,
