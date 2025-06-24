@@ -15,3 +15,5 @@ Frontend: React Native
 Backend & DB: Firebase (Authentication, Firestore)
 Gerenciamento de Pacotes: npm
 Controle de Versão: Git
+
+## Link do Excalidraw: https://excalidraw.com/#json=xZXUuH5UGnSfjoFcCewVZ,sLU6_t0hjKUcryNAOhv47w
